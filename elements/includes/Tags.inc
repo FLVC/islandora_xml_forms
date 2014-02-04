@@ -24,7 +24,6 @@ class Tags {
     if ($load) {
       form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Element');
       form_load_include($form_state, 'inc', 'xml_form_elements', 'includes/Tag');
-      Element::addRequiredResources();
       Element::addJS('tags.js');
       Element::addCSS('tags.css');
       $load = FALSE;
@@ -141,8 +140,9 @@ class Tags {
  * @param array $vars
  */
 function template_preprocess_tags(&$vars) {
+  global $base_url;
   $tags = &$vars['element'];
-  $vars['image_path'] = url(XML_FORM_ELEMENTS_IMAGES_PATH); // Location of images.
+  $vars['image_path'] =  $base_url . '/' . PATH_XML_FORM_ELEMENTS_IMAGES; // Location of images.  
   $vars['add'] = $tags['controls']['add']; // Visible Add Button
   $vars['edit'] = isset($tags['controls']['edit']) ? $tags['controls']['edit'] : NULL; // Hidden Edit Button
   $vars['remove'] = isset($tags['controls']['remove']) ? $tags['controls']['remove'] : NULL; // Hidden Remove Button

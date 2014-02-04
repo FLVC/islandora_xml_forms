@@ -1,10 +1,10 @@
 Drupal.behaviors.xmlFormElementTabs = {
   tabs: {
-	tool_tip: null,
+    tool_tip: null,
     tabs: null, // Collection of all tabpanels.
     collapsibleTabs: null,
     nonCollapsibleTabs: null,
-    loadPanels: function (collapse) {
+    loadPanels: function (collapse, context) {
       var load = '.xml-form-elements-tabs:not(.processed)';
       var collapsible = '.xml-form-elements-tabs-collapsible';
       var collapsed = '.xml-form-elements-tabs-collapsed';
@@ -31,6 +31,14 @@ Drupal.behaviors.xmlFormElementTabs = {
       if(this.nonCollapsibleTabs.length > 0) {
         this.nonCollapsibleTabs.tabs({});
       }
+      this.tabs.each(function(){
+        if(jQuery(context).attr('class') === 'clear-block') {
+          var tab = jQuery(context).find('.xml-form-elements-tabs');
+          tab.tabs({
+            selected: tab.tabs('length') - 1
+          });
+        }
+      });
     },
     setCollapsibleIconOnSelect: function(event, ui) {
       var icon = jQuery('span.expand-tabpanel-icon:first', this);
@@ -135,8 +143,9 @@ Drupal.behaviors.xmlFormElementTabs = {
     }
   },
   attach: function (context, settings) {
-	  this.tabs.loadPanels(true);
+	  this.tabs.loadPanels(true, context);
 	  this.tabs.attachToolTips();
 	  this.tabs.enableActions();
+          
   }
 }

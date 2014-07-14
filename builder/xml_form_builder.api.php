@@ -9,8 +9,8 @@
  * This hook allows modules to add default forms to form builder.
  *
  * @return array
- *   An associative array mapping unique names to associative arrays containing a
- *   single key:
+ *   An associative array mapping unique names to associative arrays containing
+ *   a single key:
  *   - form_file: A string containing the path to the form definition, relative
  *     to the webserver's document root (such that I might be opened
  */
@@ -49,6 +49,9 @@ function hook_xml_form_builder_get_transforms() {
  *     what value in the submitted form should be used as a title
  *   - transform: A string identifying which transform can be used on the XML
  *     to produce DC.  Can be "No Transform" if the form generates DC.
+ *   - self_transform: A string identifying which transform can be used on the
+ *     XML before producing final output. Can be "No Transform" if no self
+ *     transform is being applied.
  *   - template: A string whose contents should be used to prepopulate the
  *     form.  Can be empty or FALSE.
  */

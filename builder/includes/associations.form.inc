@@ -31,7 +31,8 @@ function xml_form_builder_associations_form(array $form, array &$form_state, $fo
 
   $associations = xml_form_builder_get_associations(array($form_name), array(), array(), FALSE);
   $create_table_rows = function($o) {
-    if (is_string($o['title_field'])) {
+    //if (is_string($o['title_field'])) {
+    if ((is_array($o['title_field']))&&(count($o['title_field']) > 0)) {
       $o['title_field'] = "['" . implode("']['", $o['title_field']) . "']";
     }
     else {

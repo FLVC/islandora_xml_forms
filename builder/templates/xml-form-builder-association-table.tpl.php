@@ -13,7 +13,7 @@
         <th><?php print t('Datastream ID'); ?></th>
         <th><?php print t('Label field'); ?></th>
 
-        <?php if ($use_default_transforms): ?>
+        <?php if (!$use_default_transforms): ?>
           <th><?php print t('Transform'); ?></th>
           <th><?php print t('Self Transform'); ?></th>
         <?php endif; ?>
@@ -28,7 +28,7 @@
           <td><?php print $association['dsid'] ?></td>
           <td><?php print $association['title_field'] ?></td>
 
-          <?php if ($use_default_transforms): ?>
+          <?php if (!$use_default_transforms): ?>
             <td><?php print $association['transform'] ?></td>
             <td><?php print (isset($association['self_transform'])) ? $association['self_transform'] : t("No Self Transform") ?></td>
           <?php endif; ?>

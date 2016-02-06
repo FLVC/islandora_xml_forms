@@ -228,6 +228,18 @@ function xml_form_builder_menu() {
 }
 
 /**
+ * Implements hook_menu_alter().
+ *
+ * Overrides the add datastream callback to be aware of forms.
+ */
+function xml_form_builder_menu_alter(&$items) {
+  $items['islandora/object/%islandora_object/manage/datastreams/add']['page callback'] = 'xml_form_builder_add_datastream_page';
+  $items['islandora/object/%islandora_object/manage/datastreams/add']['page arguments'] = array(2);
+  $items['islandora/object/%islandora_object/manage/datastreams/add']['module'] = 'xml_form_builder';
+  $items['islandora/object/%islandora_object/manage/datastreams/add']['file'] = 'includes/datastream.form.inc';
+}
+
+/**
  * Access callback for the XSLTs admin page.
  */
 function xml_form_builder_xslts_access() {
@@ -417,11 +429,13 @@ function xml_form_builder_get_associate_form_path($form_name) {
  *   The Form to render.
  * @param string $xml
  *   The metadata to prepopulate the form with,
+ * @param array $parents
+ *   An array containing the offset of the parents.
  *
  * @return array
  *   The Drupal Form, if it exists FALSE otherwise.
  */
-function xml_form_builder_get_form(array $form, array &$form_state, $form_name, $xml = NULL) {
+function xml_form_builder_get_form(array $form, array &$form_state, $form_name, $xml = NULL, $parents = array()) {
   form_load_include($form_state, 'inc', 'xml_form_builder', 'XMLFormRepository');
   form_load_include($form_state, 'inc', 'xml_form_api', 'XMLForm');
   form_load_include($form_state, 'inc', 'xml_form_api', 'XMLFormDefinition');
@@ -434,7 +448,7 @@ function xml_form_builder_get_form(array $form, array &$form_state, $form_name, 
     return FALSE;
   }
   try {
-    $xml_form = new XMLForm($form_state);
+    $xml_form = new XMLForm($form_state, $parents);
     // Was not initialized from storage.
     if (!$xml_form->isInitialized()) {
       $definition = new XMLFormDefinition(XMLFormRepository::Get($form_name));
@@ -519,9 +533,8 @@ function xml_form_builder_islandora_edit_datastream_registry(AbstractObject $obj
   if (count($associations) > 0) {
     return array(
       array(
-        'Name' => t('Islandora Content Model Forms'),
+        'name' => t('Islandora Content Model Forms'),
         'url' => "islandora/edit_form/{$object->id}/{$datastream->id}",
-        'weight' => 5,
       ),
     );
   }
@@ -547,7 +560,7 @@ function xml_form_builder_update_object(AbstractObject $object, array $associati
   if ($label) {
     $object->label = $label;
   }
-  $object->models = array($association['content_model']);
+  $object->models = array_merge($object->models, array($association['content_model']));
   $document = $document->document;
   $run_transforms = !variable_get('xml_form_builder_use_default_dc_xslts', FALSE);
   if (isset($association['self_transform']) && $association['self_transform'] != 'No Transform' && $run_transforms) {

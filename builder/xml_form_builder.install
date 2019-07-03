@@ -492,6 +492,7 @@ function xml_form_builder_update_7105() {
  * Had a syntax error in our schema.
  */
 function xml_form_builder_update_7106() {
+/*
   db_change_field('xml_form_builder_form_associations', 'id', 'id',
     array(
       'type' => 'serial',
@@ -611,6 +612,7 @@ function xml_form_builder_update_7106() {
     db_add_primary_key('xml_form_builder_association_hooks', array('id'));
     db_add_primary_key('xml_form_builder_xslts', array('xslt_id'));
   }
+*/
 }
 
 /**
@@ -619,6 +621,7 @@ function xml_form_builder_update_7106() {
  * Previous update was causing issues when the transform was allowed to be null.
  */
 function xml_form_builder_update_7107() {
+/*
   db_change_field('xml_form_builder_form_associations', 'transform', 'transform',
     array(
       'description' => 'An XSL transform for setting the Fedora object\'s Dublin Core metadata datastream.',
@@ -627,4 +630,5 @@ function xml_form_builder_update_7107() {
       'not null' => FALSE,
     )
   );
+*/
 }
